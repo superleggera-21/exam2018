@@ -12,7 +12,13 @@ def process_file(file_name):
     [["Mary","F",7065], ["Anna","F",2604],...]
 
     """
-    pass  # delete this line and replace with your code here
+    list = []
+    file = open(file_name, 'r')
+    for line in file:
+        temp = line.split(',')
+        list.append(temp)
+    return list
+
 
 
 def total_births(year):
@@ -21,7 +27,14 @@ def total_births(year):
     :param year: an integer, between 1880 and 2010
     :return: an integer, the total births of all the babies in that year
     """
-    pass  # delete this line and replace with your code here
+    if 1879 < int(year) < 2011:
+        yearlist = process_file('babynames/yob' + str(year) + '.txt')
+        sum = 0
+        for item in yearlist:
+            sum += int(item[2])
+        return sum
+    else:
+        raise ValueError
 
 
 def proportion(name, gender, year):
@@ -32,22 +45,32 @@ def proportion(name, gender, year):
     :param year: an integer, between 1880 and 2010
     :return: a floating number, the proportion of babies with the given name to total births in given year
     """
-    pass  # delete this line and replace with your code here
-
+    yearlist = process_file('babynames/yob' + str(year) + '.txt')
+    for item in yearlist:
+        if name == item[0] and gender == item[1]:
+            return (int(item[2])/total_births(year))
+    return 0.0
 
 def highest_year(name, gender):
     """
 
     :param name: a string
     :param gender: a string, "F" or "M"
-    :return: an integer, the year when the given name has the highest proportion over the years (among all the proportions of the same name in different years)
+    :return: an integer, the year when the given name has the highest proportion over the years (among all the
+    proportions of the same name in different years)
     """
-    pass  # delete this line and replace with your code here
-
+    highest = 0
+    highyear = 0
+    for i in range(1880, 2011):
+        if proportion(name, gender, i) > highest:
+            highest = proportion(name, gender, i)
+            highyear = i
+    return highyear
 
 def main():
     pass  # delete this line and replace with your code here
 
 
 if __name__ == '__main__':
-    main()
+    print("The year " + str(highest_year("Jack", "M")) + " has the highest proportion among all the proportions o"
+                                                    "f my names in other years.")
